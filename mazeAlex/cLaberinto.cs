@@ -57,7 +57,7 @@ namespace mazeAlex
                 }
 
                 this.dibujar();
-                Thread.Sleep(50);
+                Thread.Sleep(100);
             }
 
 

@@ -13,8 +13,9 @@ namespace mazeAlex
         static void Main(string[] args)
         {
             cLaberinto lab = new cLaberinto(19);
-            lab.dibujar();
+       
             lab.resolver();
+            lab.dibujar();
             Console.WriteLine("Laberinto resuelto");
             Console.ReadKey();
         }
