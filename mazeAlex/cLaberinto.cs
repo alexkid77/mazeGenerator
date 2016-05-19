@@ -6,17 +6,106 @@ using System.Threading.Tasks;
 using System.Threading;
 namespace mazeAlex
 {
+    class cPunto
+    {
+        public int r { get; set; }
+        public int c { get; set; }
+        public cPunto(int r, int c)
+        {
+            this.r = r;
+            this.c = c;
+        }
+
+    }
     class cLaberinto
     {
         int height = 0;
         int width = 0;
         int[,] maze;
+        cPunto entrada;
         public cLaberinto(int N)
         {
             this.height = N;
             this.width = N;
             maze = generateMaze();
+            this.maze[1, 0] = 0;
+            this.maze[height - 2, width - 1] = 0;
+            this.entrada = new cPunto(1, 0);
         }
+        public void resolver()
+        {
+            Stack<cPunto> pila = new Stack<cPunto>();
+            this.maze[entrada.r, entrada.c] = 2;
+            pila.Push(this.entrada);
+            while (pila.Count > 0)
+            {
+                cPunto punto = pila.Pop();
+                if ((punto.r == this.height - 2) && (punto.c == this.width - 1))
+                    break;
+                  
+                List<cPunto> ll = getCaminos(punto);
+                if (ll.Count > 0)
+                {
+                    pila.Push(punto);
+                    cPunto hh = new cPunto(ll[0].r, ll[0].c);
+                    pila.Push(hh);
+                    this.maze[hh.r, hh.c] = 2;
+                }
+                else
+                {
+                    this.maze[punto.r, punto.c] = 3;
+                }
+
+                this.dibujar();
+                Thread.Sleep(50);
+            }
+
+
+        }
+
+        public List<cPunto> getCaminos(cPunto p)
+        {
+            List<cPunto> res = new List<cPunto>();
+
+            try
+            {
+                if (this.maze[p.r + 1, p.c] == 0)
+                    res.Add(new cPunto(p.r + 1, p.c));
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                if (this.maze[p.r - 1, p.c] == 0)
+                    res.Add(new cPunto(p.r - 1, p.c));
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                if (this.maze[p.r, p.c + 1] == 0)
+                    res.Add(new cPunto(p.r, p.c + 1));
+            }
+            catch
+            {
+            }
+
+
+            try
+            {
+                if (this.maze[p.r, p.c - 1] == 0)
+                    res.Add(new cPunto(p.r, p.c - 1));
+            }
+            catch
+            {
+            }
+            return res;
+        }
+
         public int[,] generateMaze()
         {
             this.maze = new int[height, width];
@@ -119,43 +208,46 @@ namespace mazeAlex
 
         public void dibujar()
         {
+            Console.Clear();
             for (int i = 0; i < height; i++)
             {
                 for (int j = 0; j < width; j++)
                 {
-                    if (this.maze[i, j] == 1)
+                    if (this.maze[i, j] == 0)
                     {
-                        if (i == 0 || i == height - 1)
-                            Console.Write("=");
-                        else if (j == 0 || j == width - 1)
-                            Console.Write("|");
-                        else
-                            numeroVecinos(i, j);
-                    }
-                    else
+
                         Console.Write(" ");
+
+                        //  numeroVecinos(i, j);
+                    }
+                    else if (this.maze[i, j] == 2)
+                        Console.Write(".");
+                    else if (this.maze[i, j] == 3)
+                        Console.Write(" ");
+                    else
+                        Console.Write("*");
                 }
                 Console.Write("\n");
             }
 
 
         }
-        void numeroVecinos(int i, int j)
-        {
-            int c = this.maze[i, j] + this.maze[i, j - 1] + this.maze[i, j - 1] + this.maze[i - 1, j] + this.maze[i + 1, j];
+        /*  void numeroVecinos(int i, int j)
+          {
+            //  int c = this.maze[i, j] + this.maze[i, j - 1] + this.maze[i, j - 1] + this.maze[i - 1, j] + this.maze[i + 1, j];
 
 
-            if (this.maze[i, j - 1] == 0 && this.maze[i, j+1] == 0)
-                Console.Write("|");
-           else if((this.maze[i-1, j] == 1 && this.maze[i, j - 1]==1)|| (this.maze[i , j+1] == 1 && this.maze[i+1, j ] == 1) || (this.maze[i, j - 1] == 1 && this.maze[i + 1, j] == 1) || (this.maze[i-1, j ] == 1 && this.maze[i, j+1] == 1)) 
-                Console.Write("+");
-            else
-                Console.Write("-");
+              if (this.maze[i, j - 1] == 0 && this.maze[i, j + 1] == 0)
+                  Console.Write("|");
+              else if ((this.maze[i - 1, j] == 1 && this.maze[i, j - 1] == 1) || (this.maze[i, j + 1] == 1 && this.maze[i + 1, j] == 1) || (this.maze[i, j - 1] == 1 && this.maze[i + 1, j] == 1) || (this.maze[i - 1, j] == 1 && this.maze[i, j + 1] == 1))
+                  Console.Write("+");
+              else
+                  Console.Write("-");
 
 
 
 
-        }
+          }*/
     }
 
     static class MyExtensions
