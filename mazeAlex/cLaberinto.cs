@@ -221,11 +221,15 @@ namespace mazeAlex
                         //  numeroVecinos(i, j);
                     }
                     else if (this.maze[i, j] == 2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.Write(".");
+                        Console.ResetColor();
+                    }
                     else if (this.maze[i, j] == 3)
                         Console.Write(" ");
                     else
-                        Console.Write("*");
+                        Console.Write("|");
                 }
                 Console.Write("\n");
             }
