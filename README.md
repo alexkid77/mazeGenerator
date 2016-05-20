@@ -1,2 +1,2 @@
 # mazeGenerator
-Simple depth first search maze generator
+Simple depth first search maze generator and resolver
