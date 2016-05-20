@@ -17,6 +17,7 @@ namespace mazeAlex
         }
 
     }
+
     class cLaberinto
     {
         int height = 0;
@@ -50,13 +51,17 @@ namespace mazeAlex
                     cPunto hh = new cPunto(ll[0].r, ll[0].c);
                     pila.Push(hh);
                     this.maze[hh.r, hh.c] = 2;
+                    dibujarPunto(punto);
                 }
                 else
                 {
+                    borrarPunto(punto);
                     this.maze[punto.r, punto.c] = 3;
                 }
 
-                this.dibujar();
+                //this.dibujar();
+             
+             
                 Thread.Sleep(100);
             }
 
@@ -206,6 +211,20 @@ namespace mazeAlex
             return randoms.ToArray();
         }
 
+        public void dibujarPunto(cPunto c)
+        {
+            Console.SetCursorPosition(c.c, c.r);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(".");
+            Console.ResetColor();
+        }
+
+        public void borrarPunto(cPunto c)
+        {
+            Console.SetCursorPosition(c.c, c.r);
+            Console.Write(" ");
+        }
+
         public void dibujar()
         {
             Console.Clear();
@@ -236,6 +255,7 @@ namespace mazeAlex
 
 
         }
+
         /*  void numeroVecinos(int i, int j)
           {
             //  int c = this.maze[i, j] + this.maze[i, j - 1] + this.maze[i, j - 1] + this.maze[i - 1, j] + this.maze[i + 1, j];
